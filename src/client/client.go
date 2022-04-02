@@ -20,10 +20,13 @@ const (
 	httpClientTimeout = 15 * time.Second
 )
 
+//The default HTTP Client
 type Client struct {
 	HTTPClient *http.Client
 }
 
+//Client with the BASE_URL set, if running tests it will look for the FORM3 API in the Docker container
+//Otherwise it will look for localhost
 func (c Client) NewClient() *Client {
 	if os.Getenv("BASE_URL") != "" {
 		baseUrl = os.Getenv("BASE_URL")
@@ -35,6 +38,7 @@ func (c Client) NewClient() *Client {
 	}
 }
 
+//HTTP generic request and response
 func (c *Client) Request(v interface{}, httpMethod, path string, query map[string]string, data interface{}) (*http.Response, error) {
 	path = fmt.Sprintf("%s/%s", baseUrl, path)
 
@@ -94,6 +98,7 @@ func (c *Client) Request(v interface{}, httpMethod, path string, query map[strin
 	return resp, err
 }
 
+//Decodes the body to display
 func PrepareBody(data interface{}) ([]byte, error) {
 	switch data := data.(type) {
 
@@ -109,12 +114,14 @@ func PrepareBody(data interface{}) ([]byte, error) {
 	}
 }
 
+//Log errors
 func LogError(err error) {
 	if err != nil {
 		log.Fatalln(err)
 	}
 }
 
+//Struct to unmarshal the HTTP message for error messages
 type Error struct {
 	ErrorMessage string `json:"error_message"`
 }

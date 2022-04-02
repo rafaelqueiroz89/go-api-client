@@ -9,6 +9,7 @@ import (
 
 const accountsBasePath = "v1/organisation/accounts"
 
+//Constants for AccountClassification and Status
 const (
 	AccountClassificationPersonal string = "Personal"
 	AccountClassificationBusiness        = "Business"
@@ -17,12 +18,14 @@ const (
 	FailedStatus                         = "failed"
 )
 
+//Interface that exposes the methods to make operations in the Accounts resources
 type AccountService interface {
 	Fetch(id string) (*AccountDataResponse, *http.Response, error)
 	Create(accountData *AccountDataRequest) (*AccountDataResponse, *http.Response, error)
 	Delete(id string, version int64) (*http.Response, error)
 }
 
+//The Account Service Operator to make the client work with the Accounts resources
 type AccountServiceOperator struct {
 	client client.Client
 }
@@ -61,6 +64,7 @@ type AccountAttributes struct {
 	Switched                *bool    `json:"switched,omitempty"`
 }
 
+//Gets an Account based on a valid Id
 func (a *AccountServiceOperator) Fetch(id string) (*AccountDataResponse, *http.Response, error) {
 	accountData := &AccountDataResponse{}
 	resp, err := a.client.NewClient().Request(accountData, http.MethodGet, fmt.Sprintf("%s", accountsBasePath+"/"+id), nil, nil)
@@ -72,6 +76,7 @@ func (a *AccountServiceOperator) Fetch(id string) (*AccountDataResponse, *http.R
 	return accountData, resp, nil
 }
 
+//Creates an accounts based on a AccountDataRequest root object
 func (a *AccountServiceOperator) Create(data *AccountDataRequest) (*AccountDataResponse, *http.Response, error) {
 	accountData := &AccountDataResponse{}
 	resp, err := a.client.NewClient().Request(accountData, http.MethodPost, fmt.Sprintf("%s", accountsBasePath), nil, data)
@@ -83,6 +88,7 @@ func (a *AccountServiceOperator) Create(data *AccountDataRequest) (*AccountDataR
 	return accountData, resp, nil
 }
 
+//Deletes an account based on Id and Version
 func (a *AccountServiceOperator) Delete(id string, version int64) (*http.Response, error) {
 	accountData := &AccountDataResponse{}
 	query := make(map[string]string)
