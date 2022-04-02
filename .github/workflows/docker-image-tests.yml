@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Start containers
-      run: docker-compose -f "docker-compose.yml" up
+      run: docker-compose -f "docker-compose.yml" up --exit-code-from form3-client-api form3-client-api
 
     - name: Stop containers
       if: always()
