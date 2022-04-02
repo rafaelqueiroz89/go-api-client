@@ -39,12 +39,9 @@ services:
       - DATABASE-PASSWORD=123
     ports:
       - "8080:8080"
-  form3-client-tests:
+  form3-client-api:
       build: .
       depends_on:
         - accountapi
-        - vault
-        - postgresql
-      network_mode: host
       environment:
         - BASE_URL=http://accountapi:8080

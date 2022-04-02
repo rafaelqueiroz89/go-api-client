@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/rafaelqueiroz89/form3-client-api/accounts"
+	"github.com/rafaelqueiroz89/form3-client-api/src/accounts"
 )
 
 // The first step is to create an Account Service and assign it to its operator

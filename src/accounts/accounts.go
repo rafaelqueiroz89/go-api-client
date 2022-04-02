@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"fmt"
-	"github.com/rafaelqueiroz89/form3-client-api/client"
+	"github.com/rafaelqueiroz89/form3-client-api/src/client"
 	"net/http"
 	"strconv"
 )
