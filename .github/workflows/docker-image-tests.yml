@@ -6,7 +6,7 @@ on:
     - main
  
 jobs:
-  docker:
+  run-tests:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
