@@ -14,9 +14,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: Start containers
+    - name: Start Test containers
       run: docker-compose -f "docker-compose.yml" up --exit-code-from form3-client-api form3-client-api
 
-    - name: Stop containers
+    - name: Stop Test containers
       if: always()
       run: docker-compose -f "docker-compose.yml" down
