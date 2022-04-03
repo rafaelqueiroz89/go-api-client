@@ -20,17 +20,22 @@ const (
 	httpClientTimeout = 15 * time.Second
 )
 
-//The default HTTP Client
+// Client The default HTTP Client
 type Client struct {
 	HTTPClient *http.Client
+	BaseUrl    string
 }
 
-//Client with the BASE_URL set, if running tests it will look for the FORM3 API in the Docker container
+// NewClient Client with the BASE_URL set, if running tests it will look for the FORM3 API in the Docker container
 //Otherwise it will look for localhost
 func (c Client) NewClient() *Client {
 	if os.Getenv("BASE_URL") != "" {
 		baseUrl = os.Getenv("BASE_URL")
 	}
+	if c.BaseUrl != "" {
+		baseUrl = c.BaseUrl
+	}
+
 	return &Client{
 		HTTPClient: &http.Client{
 			Timeout: httpClientTimeout,
@@ -38,7 +43,7 @@ func (c Client) NewClient() *Client {
 	}
 }
 
-//HTTP generic request and response
+// Request HTTP generic request and response
 func (c *Client) Request(v interface{}, httpMethod, path string, query map[string]string, data interface{}) (*http.Response, error) {
 	path = fmt.Sprintf("%s/%s", baseUrl, path)
 
@@ -98,30 +103,24 @@ func (c *Client) Request(v interface{}, httpMethod, path string, query map[strin
 	return resp, err
 }
 
-//Decodes the body to display
+// PrepareBody Decodes the body to display
 func PrepareBody(data interface{}) ([]byte, error) {
-	switch data := data.(type) {
-
-	case nil:
-		return nil, nil
-	default:
-		bytesJ, err := json.Marshal(data)
-		if err != nil {
-			return nil, err
-		}
-
-		return bytesJ, nil
+	bytesJ, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
 	}
+
+	return bytesJ, nil
 }
 
-//Log errors
+// LogError Log errors
 func LogError(err error) {
 	if err != nil {
 		log.Fatalln(err)
 	}
 }
 
-//Struct to unmarshal the HTTP message for error messages
+// Error Struct to unmarshal the HTTP message for error messages
 type Error struct {
 	ErrorMessage string `json:"error_message"`
 }

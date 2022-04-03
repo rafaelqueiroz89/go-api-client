@@ -12,21 +12,24 @@ var accountService = AccountServiceOperator{}
 //Test Fetch Accounts Tests
 func TestFetch_With_Wrong_Id_Format(t *testing.T) {
 	cases := []struct {
+		name           string
 		id             string
 		expectedStatus int
 	}{
 		{
+			name:           "Wrong Id",
 			id:             "asfas",
 			expectedStatus: 400,
 		},
 		{
+			name:           "Empty Id",
 			id:             " ",
 			expectedStatus: 400,
 		},
 	}
 
 	for _, tt := range cases {
-		t.Run(tt.id, func(t *testing.T) {
+		t.Run(tt.name, func(t *testing.T) {
 			_, resp, err := accountService.Fetch(tt.id)
 			assert.NotNil(t, err)
 			assert.NotNil(t, resp)
@@ -93,36 +96,43 @@ func TestCreate_With_Invalid_AccountData(t *testing.T) {
 
 func TestCreate_With_Valid_AccountData_And_Invalid_Attributes(t *testing.T) {
 	cases := []struct {
+		name           string
 		request        *AccountDataRequest
 		expectedResult *AccountDataResponse
 		expectedError  bool
 	}{
 		{
+			name:           "AccountData with wrong value for AccountClassification",
 			request:        NewAccountDataRequestBuilder().WithAccountClassification("xpto").Build(),
 			expectedResult: nil,
 			expectedError:  true,
 		},
 		{
+			name:           "AccountData with wrong value for Country",
 			request:        NewAccountDataRequestBuilder().WithCountry("AAAAAAAF").Build(),
 			expectedResult: nil,
 			expectedError:  true,
 		},
 		{
+			name:           "AccountData with wrong value for Status",
 			request:        NewAccountDataRequestBuilder().WithStatus("AAAAAAAF").Build(),
 			expectedResult: nil,
 			expectedError:  true,
 		},
 		{
+			name:           "AccountData with wrong value for Name",
 			request:        NewAccountDataRequestBuilder().WithName(nil).Build(),
 			expectedResult: nil,
 			expectedError:  true,
 		},
 		{
+			name:           "AccountData with bad formatted value for OrganisationId",
 			request:        NewAccountDataRequestBuilder().WithOrganisationId("notaguid").Build(),
 			expectedResult: nil,
 			expectedError:  true,
 		},
 		{
+			name:           "AccountData without any Attributes",
 			request:        NewAccountDataRequestBuilder().WithAttributes(nil).Build(),
 			expectedResult: nil,
 			expectedError:  true,
@@ -130,7 +140,7 @@ func TestCreate_With_Valid_AccountData_And_Invalid_Attributes(t *testing.T) {
 	}
 
 	for _, tt := range cases {
-		t.Run("run tests", func(t *testing.T) {
+		t.Run(tt.name, func(t *testing.T) {
 			res, resp, err := accountService.Create(tt.request)
 			assert.Equal(t, res, tt.expectedResult)
 			assert.NotNil(t, resp)

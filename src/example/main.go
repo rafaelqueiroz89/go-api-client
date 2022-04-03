@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"github.com/rafaelqueiroz89/form3-client-api/src/accounts"
 )
 
 // The first step is to create an Account Service and assign it to its operator
 // This will give all the operations in the API for the Accounts resource
+// You can set up the base url with accountService.SetBaseUrl("url")
 var accountService = accounts.AccountServiceOperator{}
 
 // Example function for Create, Fetch and Delete
@@ -15,7 +15,7 @@ func main() {
 	jointAccount, switched, accMatchOutput := false, false, false
 	version := int64(0)
 
-	a, b, c := accountService.Create(
+	_, _, _ = accountService.Create(
 		&accounts.AccountDataRequest{
 			Data: &accounts.AccountData{
 				Type:           "accounts",
@@ -42,10 +42,6 @@ func main() {
 			},
 		})
 
-	fmt.Println(a)
-	fmt.Print(b)
-	fmt.Print(c)
 	_, _, _ = accountService.Fetch("4c54ff77-8067-43a7-807f-da216d598ad4")
-
 	_, _ = accountService.Delete("4c54ff77-8067-43a7-807f-da216d598ad4", 0)
 }

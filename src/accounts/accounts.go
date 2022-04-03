@@ -18,14 +18,16 @@ const (
 	FailedStatus                         = "failed"
 )
 
-//Interface that exposes the methods to make operations in the Accounts resources
+// AccountService Interface that exposes the methods to make operations in the Accounts resources
 type AccountService interface {
 	Fetch(id string) (*AccountDataResponse, *http.Response, error)
 	Create(accountData *AccountDataRequest) (*AccountDataResponse, *http.Response, error)
 	Delete(id string, version int64) (*http.Response, error)
+	SetBaseUrl(id string)
 }
 
-//The Account Service Operator to make the client work with the Accounts resources
+// AccountServiceOperator The Account Service Operator to make the client work with the Accounts resources
+// If no Base URL is given then the default ones will be used
 type AccountServiceOperator struct {
 	client client.Client
 }
@@ -64,7 +66,12 @@ type AccountAttributes struct {
 	Switched                *bool    `json:"switched,omitempty"`
 }
 
-//Gets an Account based on a valid Id
+// SetBaseUrl Sets base url
+func (a *AccountServiceOperator) SetBaseUrl(url string) {
+	a.client.BaseUrl = url
+}
+
+// Fetch an Account based on a valid Id
 func (a *AccountServiceOperator) Fetch(id string) (*AccountDataResponse, *http.Response, error) {
 	accountData := &AccountDataResponse{}
 	resp, err := a.client.NewClient().Request(accountData, http.MethodGet, fmt.Sprintf("%s", accountsBasePath+"/"+id), nil, nil)
@@ -76,7 +83,7 @@ func (a *AccountServiceOperator) Fetch(id string) (*AccountDataResponse, *http.R
 	return accountData, resp, nil
 }
 
-//Creates an accounts based on a AccountDataRequest root object
+// Create an accounts based on a AccountDataRequest root object
 func (a *AccountServiceOperator) Create(data *AccountDataRequest) (*AccountDataResponse, *http.Response, error) {
 	accountData := &AccountDataResponse{}
 	resp, err := a.client.NewClient().Request(accountData, http.MethodPost, fmt.Sprintf("%s", accountsBasePath), nil, data)
@@ -88,7 +95,7 @@ func (a *AccountServiceOperator) Create(data *AccountDataRequest) (*AccountDataR
 	return accountData, resp, nil
 }
 
-//Deletes an account based on Id and Version
+// Delete an account based on Id and Version
 func (a *AccountServiceOperator) Delete(id string, version int64) (*http.Response, error) {
 	accountData := &AccountDataResponse{}
 	query := make(map[string]string)
