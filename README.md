@@ -8,7 +8,7 @@ FORM3 Client API that exposes the methods in he FORM3 API, see the API docs here
 
 ## How to use the Client
 
-There is an example on how to use the Client here.
+There is an example on how to use the Client here: https://github.com/rafaelqueiroz89/form3-client-api/tree/main/src/example.
 
 First you need to import the desired API resource to use, this is done by referecing, for eg.: github.com/rafaelqueiroz89/form3-client-api/src/accounts
 
