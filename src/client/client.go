@@ -59,13 +59,7 @@ func (c *Client) Request(v interface{}, httpMethod, path string, query map[strin
 	request.Header.Set("Accept", "*/*")
 	request.Header.Set("Content-Type", "vnd.api+json")
 
-	if len(query) > 0 {
-		q := request.URL.Query()
-		for k, v := range query {
-			q.Add(k, v)
-		}
-		request.URL.RawQuery = q.Encode()
-	}
+	AddQueryParams(query, request)
 
 	resp, err := c.HTTPClient.Do(request)
 	LogError(err)
@@ -76,13 +70,9 @@ func (c *Client) Request(v interface{}, httpMethod, path string, query map[strin
 	}(resp.Body)
 	LogError(err)
 
-	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusBadRequest {
-		data := Error{}
-		if err := json.NewDecoder(resp.Body).Decode(&data); err == nil {
-			return resp, errors.New(data.ErrorMessage)
-		}
-
-		return resp, err
+	response, err, done := GetResponseData(resp, err)
+	if done {
+		return response, err
 	}
 
 	if v != nil {
@@ -101,6 +91,30 @@ func (c *Client) Request(v interface{}, httpMethod, path string, query map[strin
 	}
 
 	return resp, err
+}
+
+// GetResponseData Get response data and handle http status codes
+func GetResponseData(resp *http.Response, err error) (*http.Response, error, bool) {
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusBadRequest {
+		data := Error{}
+		if err := json.NewDecoder(resp.Body).Decode(&data); err == nil {
+			return resp, errors.New(data.ErrorMessage), true
+		}
+
+		return resp, err, true
+	}
+	return nil, nil, false
+}
+
+// AddQueryParams Add params to the query string
+func AddQueryParams(query map[string]string, request *http.Request) {
+	if len(query) > 0 {
+		q := request.URL.Query()
+		for k, v := range query {
+			q.Add(k, v)
+		}
+		request.URL.RawQuery = q.Encode()
+	}
 }
 
 // PrepareBody Decodes the body to display

@@ -19,12 +19,12 @@ func TestFetch_With_Wrong_Id_Format(t *testing.T) {
 		{
 			name:           "Wrong Id",
 			id:             "asfas",
-			expectedStatus: 400,
+			expectedStatus: http.StatusBadRequest,
 		},
 		{
 			name:           "Empty Id",
 			id:             " ",
-			expectedStatus: 400,
+			expectedStatus: http.StatusBadRequest,
 		},
 	}
 
@@ -77,7 +77,9 @@ func TestFetch_With_Valid_AccountData_And_Valid_Attributes(t *testing.T) {
 
 //Test Create Accounts
 func TestCreate_With_Valid_AccountData(t *testing.T) {
-	account := NewAccountDataRequestBuilder().WithAccountClassification(AccountClassificationPersonal).Build()
+	account := NewAccountDataRequestBuilder().
+		WithAccountClassification(AccountClassificationPersonal).
+		Build()
 	res, resp, err := accountService.Create(account)
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusCreated, resp.StatusCode)
