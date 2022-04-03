@@ -16,7 +16,7 @@ Then you need to create a variable to work with the {resource}Operator
 
 `var accountService = accounts.AccountServiceOperator{}`
 
-The resource operations will now be available, the interface exposes the methods you might want to use, currently the available operations are: Fetch, Create and Delete an Account.
+The resource operations will now be available, the interface exposes the methods you might want to use, currently the available operations are: Fetch, Create and Delete an Account. There is also a function to update the Base URL, the default for local development is http://localhost:8080 while in Docker it is: http://accountapi:8080 
 
 ### Fetch
 `result, resp, err = accountService.Fetch("4c54ff77-8067-43a7-807f-da216d598ad4")`
