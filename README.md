@@ -38,4 +38,6 @@ Some points to consider:
 - It was fun to create this !
 - You will see two users commiting, both are me but one of them is my work github profile (apperently I forgot to logout while making the commits), at least this repo is private :) 
 - I used Goland to create this project
+- I used the builder pattern and fluent pattern to help me create the integration tests which made them easy to create
+- I also used the table pattern to create many tests with different outcomes
 - Github actions is here: https://github.com/rafaelqueiroz89/form3-client-api/actions
