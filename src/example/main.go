@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/rafaelqueiroz89/form3-client-api/src/accounts"
+	"github.com/rafaelqueiroz89/go-lang-api-client/src/accounts"
 )
 
 // The first step is to create an Account Service and assign it to its operator
