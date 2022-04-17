@@ -1,4 +1,4 @@
-module github.com/rafaelqueiroz89/go-lang-api-client
+module github.com/rafaelqueiroz89/go-api-client
 
 require github.com/stretchr/testify v1.7.0
 
