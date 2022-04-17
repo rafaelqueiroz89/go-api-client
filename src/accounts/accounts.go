@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"fmt"
-	"github.com/rafaelqueiroz89/go-lang-api-client/src/client"
+	"github.com/rafaelqueiroz89/go-api-client/src/client"
 	"net/http"
 	"strconv"
 )
