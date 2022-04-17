@@ -128,6 +128,7 @@ func PrepareBody(data interface{}) ([]byte, error) {
 }
 
 // LogError Log errors
+//TODO: this function will kill execution if there is some kind of error
 func LogError(err error) {
 	if err != nil {
 		log.Fatalln(err)
